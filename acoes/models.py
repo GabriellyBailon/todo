@@ -7,10 +7,10 @@ class Acao(models.Model):
     descricao = models.TextField()
     data = models.DateField(auto_now_add=True)
     open = models.FloatField()
-    closed = models.FloatField()
+    close = models.FloatField()
     high = models.FloatField()
     low = models.FloatField()
     volume = models.FloatField()
 
     def __str__(self):
-        return self.title
+        return self.codigo

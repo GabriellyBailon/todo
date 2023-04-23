@@ -6,4 +6,4 @@ class AcaoForm(forms.ModelForm):
 
     class Meta:
         model = Acao
-        fields = ('codigo', 'descricao', 'open', 'closed', 'high', 'low', 'volume')
+        fields = ('codigo', 'descricao', 'open', 'close', 'high', 'low', 'volume')

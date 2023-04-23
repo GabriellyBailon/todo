@@ -27,7 +27,17 @@
         <ul class="acao-list">
             {% for acao in acoes %}
             <li class="acao-item">
-                <span><a href="/acoes/acao/{{acao.id}}">{{acao.codigo}}</a></span>
+                <span><a href="/acao/{{acao.id}}">
+                    <p> 
+                        <strong>Cód: </strong> {{acao.codigo}} 
+                        <strong>Data: </strong> {{acao.data}} 
+                        <strong>Open: </strong> {{acao.open}}
+                        <strong>Close: </strong> {{acao.close}}
+                        <strong>High: </strong> {{acao.high}}
+                        <strong>Low: </strong> {{acao.low}}
+                        <!-- <strong>Volume: </strong> {{acao.volume}} -->
+                    </p> 
+                </a></span>
                 <a href="delete/{{acao.id}}" class="delete-btn"><span><i class="fas fa-trash"></i></span></a>
                 <a href="edit/{{acao.id}}"><span><i class="fas fa-edit"></i></span></a>
             </li>
