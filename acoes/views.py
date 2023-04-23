@@ -21,9 +21,9 @@ def acoesList(request):
     if search:
 
         # Filtra as ações pelo o que foi digitado pelo usuário
-        acoes_list = Acao.objects.filter(codigo__icontains=search)
+        acoes = Acao.objects.filter(codigo__icontains=search)
 
-    # Se o usuário não digitar nada na busca, mostra todas as tasks (tarefas) ordenadas pela data de criação 
+    # Se o usuário não digitar nada na busca, mostra todas as ações ordenadas pela data de criação 
     else:
         # Populando a base de dados
         # Obtém o ticket de uma ação
@@ -56,15 +56,24 @@ def acoesList(request):
                     volume = row.Volume
                 )
                 new_stock.save()
-        
-        # Obtém todas as ações da base de dados
-        acoes_list = Acao.objects.all()
+
+          # Obtém todas as tasks e as ordena pela data de criação
+        acoes_list = Acao.objects.all().order_by('-codigo')
+
+        #Paginação das tarefas de 3 em 3
+        paginator = Paginator(acoes_list, 5)
+
+        # Página atual
+        page = request.GET.get('page')
+
+        #Pegando as tasks da página atual
+        acoes = paginator.get_page(page)
 
 
-    # Envia as tasks selecionadas para serem renderizadas no código html
-    return render(request, 'acoes/list.html', {'acoes': acoes_list})
+    # Envia as ações selecionadas para serem renderizadas no código html
+    return render(request, 'acoes/list.html', {'acoes': acoes})
 
-# Visualização de uma task específica, selecionada pelo id
+# Visualização de uma ação específica, selecionada pelo id
 def acoesView(request, id):
     acao = get_object_or_404(Acao, pk=id)
     return render(request,'acoes/acao.html', {'acao': acao})
@@ -77,15 +86,15 @@ def newAcao(request):
 
         # Verifica se os dados no formulário são válidos
         if form.is_valid():
-            task = form.save(commit=False)
-            task.save()
+            ação = form.save(commit=False)
+            ação.save()
 
             # Redireciona para a página inicial
             return redirect('/')
         
         else:
             # Redireciona para a página inicial
-            return redirect('/acoes/newacao/')
+            return redirect('/newacao/')
 
     # Senão ele chama o formulário para adicionar nova tarefa
     else:
@@ -106,18 +115,18 @@ def editAcao(request, id):
         form = AcaoForm(request.POST, instance=acao)
         if(form.is_valid()):
             acao.save()
-            return redirect('/acoes/')
+            return redirect('/')
         else:
             return render(request, 'acoes/editacao.html', {'form': form, 'acao': acao})
 
-    # Caso ocorra algum outro tipo de requisição, a página de editar task é chamada novamente
+    # Caso ocorra algum outro tipo de requisição, a página de editar ação é chamada novamente
     else:
         return render(request, 'acoes/editacao.html', {'form': form, 'acao': acao})
     
 def deleteAcao(request, id):
-    # Obtém a task com o id passado
+    # Obtém a ação com o id passado
     acao = get_object_or_404(Acao, pk=id)
-    # Deleta a task encontrada acima
+    # Deleta a ação encontrada acima
     acao.delete()
 
     # Mostra a mensagem na tela
