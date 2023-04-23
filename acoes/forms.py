@@ -1,9 +1,9 @@
 from django import forms
 
-from .models import Acao
+from .models import AcaoModel
 
 class AcaoForm(forms.ModelForm):
 
     class Meta:
-        model = Acao
-        fields = ('codigo', 'descricao', 'open', 'close', 'high', 'low', 'volume')
+        model = AcaoModel
+        fields = ('codigo', 'descricao', 'open', 'closed', 'high', 'low', 'volume')

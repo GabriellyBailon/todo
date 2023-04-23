@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Acao
+from .models import AcaoModel
 
 # Register your models here.
-admin.site.register(Acao)
+admin.site.register(AcaoModel)

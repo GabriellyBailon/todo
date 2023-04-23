@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.paginator import Paginator
 from django.http import HttpResponse
-from .models import Acao
+from .models import AcaoModel
 from .forms import AcaoForm
 from django.contrib import messages
 import yfinance as yf
@@ -21,7 +21,7 @@ def acoesList(request):
     if search:
 
         # Filtra as ações pelo o que foi digitado pelo usuário
-        acoes = Acao.objects.filter(codigo__icontains=search)
+        acoes = AcaoModel.objects.filter(codigo__icontains=search)
 
     # Se o usuário não digitar nada na busca, mostra todas as ações ordenadas pela data de criação 
     else:
@@ -43,14 +43,14 @@ def acoesList(request):
         #Verifica se a base de dados já foi populada. Se sim, continua. Se não, preenche com os dados do yfinance
 
 
-        if not Acao.objects.filter(codigo__icontains=hist.iloc[1].Code):
+        if not AcaoModel.objects.filter(codigo__icontains=hist.iloc[1].Code):
             for date, row in hist.iterrows():
-                new_stock = Acao.objects.create(
+                new_stock = AcaoModel.objects.create(
                     codigo = row.Code,
                     descricao = row.Description,
                     data = date,
                     open = row.Open,
-                    close = row.Close,
+                    closed = row.Close,
                     high = row.High,
                     low = row.Low,
                     volume = row.Volume
@@ -58,7 +58,7 @@ def acoesList(request):
                 new_stock.save()
 
           # Obtém todas as tasks e as ordena pela data de criação
-        acoes_list = Acao.objects.all().order_by('-codigo')
+        acoes_list = AcaoModel.objects.all().order_by('-codigo')
 
         #Paginação das tarefas de 3 em 3
         paginator = Paginator(acoes_list, 5)
@@ -75,7 +75,7 @@ def acoesList(request):
 
 # Visualização de uma ação específica, selecionada pelo id
 def acoesView(request, id):
-    acao = get_object_or_404(Acao, pk=id)
+    acao = get_object_or_404(AcaoModel, pk=id)
     return render(request,'acoes/acao.html', {'acao': acao})
 
 # Inserção dos dados (C do CRUD)
@@ -106,7 +106,7 @@ def newAcao(request):
 # Edição dos dados (U do CRUD)
 def editAcao(request, id):
     # Obtém a tarefa de acordo com a chave primária id
-    acao = get_object_or_404(Acao, pk=id)
+    acao = get_object_or_404(AcaoModel, pk=id)
     # Cria um forms com os dados obtidos acima
     form = AcaoForm(instance=acao)
 
@@ -125,7 +125,7 @@ def editAcao(request, id):
     
 def deleteAcao(request, id):
     # Obtém a ação com o id passado
-    acao = get_object_or_404(Acao, pk=id)
+    acao = get_object_or_404(AcaoModel, pk=id)
     # Deleta a ação encontrada acima
     acao.delete()
 
