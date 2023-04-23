@@ -80,9 +80,13 @@ WSGI_APPLICATION = 'todo.wsgi.application'
 DATABASES = {
     'default': {
         # Mecanismo
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # Nome
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': 'projetodjango',
+        'USER': 'django',
+        'PASSWORD': 'teste',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
