@@ -5,6 +5,7 @@ from django.http import HttpResponse
 from .models import AcaoModel
 from .forms import AcaoForm
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 import yfinance as yf
 import pandas as pd
 import numpy as np
@@ -12,6 +13,7 @@ import numpy as np
 # Create your views here.
 
 # Visualização dos dados (R do CRUD)
+@login_required(login_url='cadastro')
 def acoesList(request):
 
     # Pega o conteúdo pesquisado
@@ -74,11 +76,13 @@ def acoesList(request):
     return render(request, 'acoes/list.html', {'acoes': acoes})
 
 # Visualização de uma ação específica, selecionada pelo id
+@login_required(login_url='cadastro')
 def acoesView(request, id):
     acao = get_object_or_404(AcaoModel, pk=id)
     return render(request,'acoes/acao.html', {'acao': acao})
 
 # Inserção dos dados (C do CRUD)
+@login_required(login_url='cadastro')
 def newAcao(request):
     # Se o formulário já tiver preenchido ele envia os dados para o banco
     if request.method == 'POST':
@@ -104,6 +108,7 @@ def newAcao(request):
         return render(request, 'acoes/addacao.html', {'form': form})
     
 # Edição dos dados (U do CRUD)
+@login_required(login_url='cadastro')
 def editAcao(request, id):
     # Obtém a tarefa de acordo com a chave primária id
     acao = get_object_or_404(AcaoModel, pk=id)
@@ -122,7 +127,8 @@ def editAcao(request, id):
     # Caso ocorra algum outro tipo de requisição, a página de editar ação é chamada novamente
     else:
         return render(request, 'acoes/editacao.html', {'form': form, 'acao': acao})
-    
+
+@login_required(login_url='cadastro')
 def deleteAcao(request, id):
     # Obtém a ação com o id passado
     acao = get_object_or_404(AcaoModel, pk=id)

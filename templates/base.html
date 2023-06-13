@@ -15,20 +15,42 @@
 </head>
 
 <body>
+
+    {% for message in messages %}
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+    <div class="alert alert-success" role="alert">
+    <p id="messages">{{message}}</p>
+    </div>
+    {% else %}
+    <div class="alert alert-danger" role="alert">
+    <p id="messages">{{message}}</p>
+    </div>
+    {% endif %}
+    {% endfor %}
+
     <div class="container-fluid">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/acoes/">Anota Tudo</a>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" >
+            <a class="navbar-brand" style="margin-left: 25px"href="/acoes/">Anota Tudo</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#conteudoNavbarSuportado" aria-controls="conteudoNavbarSuportado" aria-expanded="false" aria-label="Alterna navegação">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
+            
             <div class="collapse navbar-collapse" id="conteudoNavbarSuportado">
                 <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Ações</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Usuários</a>
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cadastro' %}">Cadastro</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'redefinir_senha' %}">Redefinir senha</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Sobre nós</a>
@@ -40,7 +62,7 @@
         {% block content %} {% endblock content %}
 
         <footer>
-            <p>Anota Tudo</p> 
+            <p class="text-white mb-3 mb-md-0" style="margin:none; padding:none">Copyright © 2023 Anota Tudo. All rights reserved.</p> 
         </footer>
 
     </div>

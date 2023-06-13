@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-
 from rest_framework import routers
 
 from acoes.api import viewsets as acoesviewsets
@@ -28,6 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('acoes.urls')),
-    path('api/', include(route.urls))
+    path('api/', include(route.urls)),
+    path('', include('usuarios.urls'))
 
 ]
