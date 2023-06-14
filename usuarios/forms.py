@@ -107,3 +107,22 @@ class RedefinirSenhaForm(forms.Form):
             }
         )
     )
+
+class RedefinirPermissao(forms.Form):
+
+    opcoes = [("1", "Tornar administrador"), ("2", "Tornar Membro Comum")]
+
+    usuario = forms.CharField(
+        label="Usuário",
+        required=True,
+        max_length=100,
+        widget=forms.TextInput(
+            attrs={
+                "class": "form-control",
+                "placeholder": "Ex.: Digite o nome de usuário do qual deseja alterar permissões. Ex:. joao_silva"
+            }
+        )
+    )
+    
+    permissao = forms.ChoiceField(widget=forms.RadioSelect, choices=opcoes)
+    

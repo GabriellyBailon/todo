@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from usuarios.forms import LoginForms, CadastroForms, RedefinirSenhaForm
+from usuarios.forms import LoginForms, CadastroForms, RedefinirSenhaForm, RedefinirPermissao
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.contrib import messages
@@ -96,7 +96,46 @@ def redefinir_senha(request):
         usuario.save()
 
         messages.success(request, "Senha alterada com sucesso.")
-        return render(request, 'usuarios/login.html')
+        return render(request, 'usuarios/login.html', {"form":form})
         
         
     return render(request, 'usuarios/redefinir.html', {"form":form})
+
+@login_required(login_url='cadastro')
+def alterar_permissao(request):
+    form = RedefinirPermissao()
+
+    if request.method == 'POST':
+
+        form = RedefinirPermissao(request.POST)
+        usuario = form['usuario'].value()
+
+        try:
+            usuario = User.objects.get(username=usuario)
+        except:
+            messages.error(request, f"Usuário {usuario} não existe.")
+            return render(request, 'usuarios/permissoes.html', {'form':form})
+        
+        permissao_desejada = form['permissao'].value()
+        
+        if permissao_desejada == '1':
+            if usuario.is_staff:
+                messages.error(request, f"O usuário {usuario} já é administrador")
+                return render(request, 'usuarios/permissoes.html',{'form':form})
+            else:
+                usuario.is_staff = 1
+                usuario.save()
+                messages.success(request, f'O usuário {usuario} agora é administrador.')
+                return render(request, 'usuarios/permissoes.html', {'form':form})
+        else:
+            if not usuario.is_staff:
+                messages.error(request, f"Usuário {usuario} já é comum")
+                return render(request, 'usuarios/permissoes.html', {'form':form})
+            else:
+                usuario.is_staff = 0
+                usuario.save()
+                messages.success(request, f'O usuário {usuario} agora é comum')
+                return render(request, 'usuarios/permissoes.html', {'form':form})
+
+    return render(request, 'usuarios/permissoes.html', {'form':form})
+

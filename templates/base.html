@@ -52,6 +52,11 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'redefinir_senha' %}">Redefinir senha</a>
                 </li>
+                {% if request.user.is_staff %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'alterar_permissao' %}">Controle de permissões</a>
+                </li>
+                {% endif %}
                 <li class="nav-item">
                     <a class="nav-link" href="#">Sobre nós</a>
                 </li>

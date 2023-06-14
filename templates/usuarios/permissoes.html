@@ -27,7 +27,6 @@
   {% endif %}
   {% endfor %}
     <section class="vh-100">
-      
         <div class="container-fluid h-custom">
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-md-9 col-lg-6 col-xl-5">
@@ -35,9 +34,10 @@
                 class="img-fluid" alt="Sample image">
             </div>
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-              <form action="{% url 'login' %}" method="POST">
+              <form action="{% url 'alterar_permissao' %}" method="POST">
                 {% csrf_token %}
-                <h1>Login</h1>
+                <h1>Alterar permissões de um usuário</h1>
+                <p>Essa página é acessável somente por administradores.</p>
                 <div class="form-outline mb-4">
                   {% for field in form.visible_fields %}
                   <div>
@@ -47,9 +47,9 @@
                   {% endfor %}
                 </div>
                 <div>
-                  <button class="form-control form-control-lg" style="color:#fdfdfd; background-color: rgb(47, 98, 238);" type="submit">Login</button>
+                  <button class="form-control form-control-lg" style="color:#fdfdfd; background-color: rgb(47, 98, 238);" type="submit">Alterar</button>
+                  <a href="{% url 'acao-list' %}"> Voltar para página inicial </a>
                 </div>
-                <p>Não tem uma conta?<a href="{% url 'cadastro' %}"> Faça cadastro</a></p>
 
               </form>
             </div>
